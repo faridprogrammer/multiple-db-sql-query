@@ -1,11 +1,11 @@
 databases:
 -
-    name: Yekan_KianFunds6
+    name: Db1
     connection_string: server=.; database=Test1; user id=sa; password=1; multipleactiveresultsets=true; asynchronous processing=true;TrustServerCertificate=True;
 -
-    name: Yekan_KianBazargardan
+    name: Db2
     connection_string: server=.; database=Test2; user id=sa; password=1; multipleactiveresultsets=true; asynchronous processing=true;TrustServerCertificate=True;    
 -
-    name: Sabadyar_Baazdeh
+    name: Db3
     connection_string: server=.; database=Test3; user id=sa; password=1; multipleactiveresultsets=true; asynchronous processing=true;TrustServerCertificate=True;
     

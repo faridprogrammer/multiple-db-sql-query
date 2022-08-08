@@ -1,8 +1,9 @@
-const yaml = require('js-yaml');
-const fs = require('fs');
-const prompt = require('prompt-sync')({ sigint: true });
-const sql = require('mssql');
+import yaml from "js-yaml"
+import fs from "fs"
+import promptSync from "prompt-sync"
+import sql from "mssql"
 
+const prompt = promptSync({ sigint: true });
 (async ()=> {
     try {
         if (!fs.existsSync('db.yml')) {
