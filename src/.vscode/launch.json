@@ -5,11 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Debug query",
             "skipFiles": [
                 "<node_internals>/**"
+            ],
+            "args": [
+                "run",
+                "--query",
+                "select count(*) as [count] from core.fiscalyear"
             ],
             "program": "${workspaceFolder}\\dist\\index.js",
             "preLaunchTask": "tsc: build - tsconfig.json",
