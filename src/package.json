@@ -1,14 +1,17 @@
 {
   "name": "sql-multi-db-query",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "A tool to run query on multiple sql server databases",
   "main": "dist/index.js",
   "repository": "https://github.com/faridprogrammer/multiple-db-sql-query.git",
   "author": "Farid Bekran <faridbekran15@gmail.com>",
   "license": "MIT",
   "private": false,
+  "bin": {
+    "sql-multi-db-query": "dist/index.js"
+  },
   "scripts": {
-    "start": "tsc && node dist/index.jsx",
+    "start": "tsc && node dist/index.js",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
