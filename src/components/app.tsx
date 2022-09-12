@@ -1,97 +1,70 @@
 import React, { useState, useEffect } from 'react'
 import { QueryResult } from '../QueryResult'
-import { Text, Box, Newline } from 'ink'
+import { Text, Box } from 'ink'
 import * as lib from '../lib'
-import yargs from 'yargs'
-import { hideBin } from 'yargs/helpers'
 import Table from 'ink-table'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-
-enum AlertType {
-  Success,
-  Info,
-  Error,
-}
-class Alert {
-  constructor(public Message: string, public Type: AlertType) {}
-  getColor(): string {
-    switch (this.Type) {
-      case AlertType.Info:
-        return 'blue'
-      case AlertType.Error:
-        return 'red'
-      case AlertType.Success:
-        return 'green'
-      default:
-        return ''
-    }
-  }
-}
+import { AlertType } from './AlertType'
+import { Alert } from './Alert'
+import TextInput from 'ink-text-input'
 
 export const App = () => {
   let [queryResults, setQueryResults] = useState<QueryResult[]>([])
-  let [alert, setAlert] = useState<Alert>(null)
+  let [error, setError] = useState<boolean>(false)
+  let [query, setQuery] = useState<string>('')
+  let [alert, setAlert] = useState<Alert[]>([])
 
+  const handleSubmit = (query) => {
+    setAlert((prev) => [
+      ...prev,
+      new Alert(`Running queries...`, AlertType.Info),
+    ])
+    lib.runQuery(query).then((res) => {
+      setAlert((prev) => [
+        ...prev,
+        new Alert(`Query execution ended...`, AlertType.Success),
+      ])
+      setQueryResults(res)
+    })
+    // if (lib.prepareEnvironment()) {
+    //   setAlert((prev) => [
+    //     ...prev,
+    //     new Alert(`db.yml file created...`, AlertType.Success),
+    //   ])
+    // }
+  }
   useEffect(() => {
-    let getData = async () => {
-      {
-        yargs(hideBin(process.argv))
-          .command(
-            'run [query]',
-            'run the query',
-            (yargs) => {
-              return yargs.option('query', {
-                describe: 'A query to run against databases in db.yml',
-                demandOption: true,
-                type: 'string',
-              })
-            },
-            (argv) => {
-              if (!fs.existsSync(path.join(os.homedir(), `db.yml`))) {
-                setAlert(
-                  new Alert(
-                    `You need to create a db config file with "db.yml" name in ${os.homedir()}\nUse "prep" command to create the file.`,
-                    AlertType.Error,
-                  ),
-                )
-              } else {
-                setAlert(new Alert(`Running queries...`, AlertType.Info))
-                lib.runQuery(argv.query).then((res) => {
-                  setAlert(
-                    new Alert(`Query execution ended...`, AlertType.Success),
-                  )
-                  setQueryResults(res)
-                })
-              }
-            },
-          )
-          .command(
-            'prep',
-            'Creates required files to use package. Like: db.yml in home dir',
-            (yargs) => {},
-            (argv) => {
-              if (lib.prepareEnvironment()) {
-                setAlert(new Alert(`db.yml file created...`, AlertType.Success))
-              }
-            },
-          )
-          .option({
-            verbose: { type: 'boolean', default: false },
-          })
-          .strictCommands()
-          .demandCommand(1)
-          .parse()
-      }
+    if (!fs.existsSync(path.join(os.homedir(), `db.yml`))) {
+      setAlert((prev) => [
+        ...prev,
+        new Alert(
+          `You need to create a db config file with "db.yml" name in ${os.homedir()}\nUse "prep" command to create the file.`,
+          AlertType.Error,
+        ),
+      ])
+      setError(true)
     }
-    getData().catch(console.error)
   }, [])
 
   return (
     <Box flexDirection="column">
-      <Box>
-        {alert && <Text color={alert.getColor()}>{alert.Message} </Text>}
+      <Box key="static_alerts" flexDirection="column">
+        {alert.map(
+          (alertItem) =>
+            alertItem && (
+              <Text key={alertItem.Message} color={alertItem.getColor()}>
+                {alertItem.Message}{' '}
+              </Text>
+            ),
+        )}
+      </Box>
+      <Box display={error ? 'none' : 'flex'}>
+        <Box marginRight={1}>
+          <Text>Enter your query:</Text>
+        </Box>
+        <TextInput value={query} onChange={setQuery} onSubmit={handleSubmit} />
       </Box>
       {queryResults.length != 0 && (
         <Box flexDirection="column" width="100%">
@@ -106,11 +79,9 @@ export const App = () => {
                 <Box
                   key={item.DatabaseName}
                   flexDirection="column"
-                  borderColor="cyanBright"
-                  borderStyle="classic"
                   paddingLeft={2}
                 >
-                  <Box alignItems="center"  width="100%">
+                  <Box alignItems="center" width="100%">
                     <Text bold={true} color="blue" key={item.DatabaseName}>
                       {item.DatabaseName}
                     </Text>
@@ -125,11 +96,9 @@ export const App = () => {
                 <Box
                   key={item.DatabaseName}
                   flexDirection="column"
-                  borderColor="cyanBright"
-                  borderStyle="classic"
                   paddingLeft={2}
                 >
-                  <Box alignItems='center' width="100%">
+                  <Box alignItems="center" width="100%">
                     <Text bold={true} color="blue" key={item.DatabaseName}>
                       {item.DatabaseName}
                     </Text>
