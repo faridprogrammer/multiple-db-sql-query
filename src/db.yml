@@ -1,8 +1,5 @@
 databases:
 -
-    name: Sabadyar_Armaneghtesad
-    connection_string: server=192.168.20.47; database=Sabadyar_Armaneghtesad; user id=f.bekran; password=Farhad59.Mani; multipleactiveresultsets=true; asynchronous processing=true;TrustServerCertificate=True;
--
     name: Db2
     connection_string: server=.; database=Test2; user id=sa; password=1; multipleactiveresultsets=true; asynchronous processing=true;TrustServerCertificate=True;    
 -

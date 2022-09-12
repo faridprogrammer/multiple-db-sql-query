@@ -13,7 +13,7 @@ In order to do that. You need to define a `db.yml` file with the following struc
     
 Note that you need to add `TrustServerCertificate=True` to your connection string.
 
-# How to run
+# Commands
 Command structure of the package is as follows:
 
     Commands:
@@ -24,7 +24,11 @@ Command structure of the package is as follows:
     --version  Show version number                                       [boolean]
     --verbose                                           [boolean] [default: false]
 
-# Example
+# Installation
 For example you can run your desired query like this: 
 
-`npx sql-multi-db-query run --query 'select count(*) as [count] from core.users'`
+`npm install sql-multi-db-query -g`
+
+# Usage
+
+`sql-multi-db-query run --query 'select count(*) as [count] from core.users'`
