@@ -1,6 +1,6 @@
 {
   "name": "sql-multi-db-query",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "A tool to run query on multiple sql server databases",
   "main": "dist/index.js",
   "repository": "https://github.com/faridprogrammer/multiple-db-sql-query.git",
@@ -21,13 +21,9 @@
   },
   "dependencies": {
     "@types/mssql": "^8.1.1",
-    "@types/react": "^18.0.20",
-    "ink": "^3.2.0",
-    "ink-table": "^3.0.0",
-    "ink-text-input": "^4.0.3",
+    "@types/terminal-kit": "^2.5.0",
     "js-yaml": "^4.1.0",
     "mssql": "^8.1.2",
-    "react": "^17.0.2",
-    "react-scripts": "^5.0.1"
+    "terminal-kit": "^3.0.0"
   }
 }

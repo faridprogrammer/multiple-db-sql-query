@@ -6,8 +6,7 @@ import path from "path"
 import os from "os"
 export const runQuery = async (query: string): Promise<QueryResult[]> => {
     if (query.toLowerCase().includes('update') || query.toLowerCase().includes('delete') || query.toLowerCase().includes('insert')) {
-        console.error("Cannot send insert, update or delete command.");
-        return;
+        throw new Error("Cannot send insert, update or delete command.");
     }
 
     const dbConfig = yaml.load(fs.readFileSync(path.join(os.homedir(), `db.yml`), 'utf8'));
@@ -38,7 +37,7 @@ export const runQuery = async (query: string): Promise<QueryResult[]> => {
 export function prepareEnvironment(): boolean {
     let filePath = path.join(os.homedir(), `db.yml`);
     if (fs.existsSync(filePath)) {
-        console.error(`There is already a "db.yml" file in ${os.homedir()}`);
+        console.error(`\nThere is already a "db.yml" file in ${os.homedir()}`);
         return false;
     }
     else {
