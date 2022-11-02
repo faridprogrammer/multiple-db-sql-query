@@ -6,6 +6,8 @@ import path from 'path'
 import { prepareEnvironment, runQuery } from './lib';
 import yaml from "js-yaml"
 
+terminal.reset();
+
 function terminate() {
     terminal.grabInput(false);
     setTimeout(function () { process.exit() }, 100);
@@ -86,6 +88,7 @@ function getAndExecuteQuery() {
                 terminal(`\n\n`);
                 let result = await runQuery(query);
                 result.forEach(item => {
+                    terminal(`\n`);
                     terminal.bgBlue(item.DatabaseName);
                     terminal(`\n`);
                     if (item.Error) {
@@ -93,7 +96,14 @@ function getAndExecuteQuery() {
                     }
                     else {
                         let resultTable = item.ResultTable.toTable();
+
+                        if (resultTable.rows.length == 0) {
+                            terminal.green(`\nNo results\n`);
+                            return;
+                        }
+
                         let tableRows = [resultTable.columns.map(dd => dd.name)];
+
                         resultTable.rows.forEach(row => {
                             let rowArray = [];
                             for (const value of row.values()) {
@@ -101,7 +111,9 @@ function getAndExecuteQuery() {
                             }
                             tableRows.push(rowArray);
                         });
+
                         terminal.table(tableRows, { wordWrap: true, expandToWidth: true })
+                        terminal(`\n`);
                     }
                 });
                 showMenu();

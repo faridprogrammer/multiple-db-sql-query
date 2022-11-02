@@ -1,6 +1,6 @@
 {
   "name": "sql-multi-db-query",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "A tool to run query on multiple sql server databases",
   "main": "dist/index.js",
   "repository": "https://github.com/faridprogrammer/multiple-db-sql-query.git",
