@@ -22,7 +22,7 @@ export const runQuery = async (query: string): Promise<QueryResult[]> => {
                 })
             }
             finally {
-                pool.close();
+                await pool.close();
             }
         } catch (err) {
             queryResults.push({
