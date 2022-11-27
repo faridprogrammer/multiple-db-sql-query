@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { terminal } from 'terminal-kit'
+import {terminal} from 'terminal-kit'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import { prepareEnvironment, runQuery } from './lib';
+import {prepareEnvironment, runQuery} from './lib';
 import yaml from "js-yaml"
 
 terminal.reset();
@@ -19,7 +19,7 @@ terminal.on('key', function (name, matches, data) {
 terminal(`\n\n`);
 terminal.underline("Welcome to multiple database sql query tool!\n");
 
-var menuItems = [
+const menuItems = [
     '1. See databases',
     '2. Run query',
     '3. Exit'
@@ -73,7 +73,7 @@ function showDatabases() {
     const dbConfig = yaml.load(fs.readFileSync(path.join(os.homedir(), `db.yml`), 'utf8'));
     let index = 1;
     for (const database of dbConfig.databases) {
-        terminal(index + `. ` + database.name + `\n`);
+        terminal(index.toString().padStart(2) + `. ` + database.name + `\n`);
         index++;
     }
     showMenu();
@@ -83,10 +83,9 @@ function getAndExecuteQuery() {
     terminal.white(`\nEnter your query: `);
     terminal.inputField(
         async (error, input) => {
-            let query = input;
             try {
                 terminal(`\n\n`);
-                let result = await runQuery(query);
+                let result = await runQuery(input);
                 result.forEach(item => {
                     terminal(`\n`);
                     terminal.bgBlue(item.DatabaseName);
